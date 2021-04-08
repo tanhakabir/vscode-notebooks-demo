@@ -40,12 +40,11 @@ export class GroceryListNotebookExecutionKernel implements vscode.NotebookKernel
 		// do the work
 		try {
 			// this is where we'd do our "compiling" before outputting results
-			const outputData = JSON.parse(cell.getText());
 
             // update the outputs of the cell with options for a simple JSON output or a stylized JSON output
 			execution.replaceOutput([new vscode.NotebookCellOutput([
-				// new vscode.NotebookCellOutputItem('x-application/grocery-list-notebook', outputData),
-				new vscode.NotebookCellOutputItem('application/json', outputData),
+				new vscode.NotebookCellOutputItem('application/json', groceryList),
+				// new vscode.NotebookCellOutputItem('x-application/grocery-list-notebook', groceryList),
 			], metadata)]);
 
 			execution.end({ success: true });

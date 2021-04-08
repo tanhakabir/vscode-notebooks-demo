@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GroceryListNotebookContentSerializer = void 0;
 const vscode = require("vscode");
 const util_1 = require("util");
+const extension_1 = require("./extension");
 class GroceryListNotebookContentSerializer {
     // contents from file to VS Code Notebook data
     async dataToNotebook(data) {
@@ -13,8 +14,9 @@ class GroceryListNotebookContentSerializer {
             raw = JSON.parse(contents);
         }
         catch {
-            raw = { cells: [] };
+            raw = { groceryList: [], cells: [] };
         }
+        extension_1.setGroceryList(extension_1.groceryList);
         // Create array of Notebook cells for the VS Code API from file contents
         const cells = raw.cells.map(item => new vscode.NotebookCellData(item.kind, item.value, item.language, item.outputs ? [new vscode.NotebookCellOutput(item.outputs.map(raw => new vscode.NotebookCellOutputItem(raw.mime, raw.value)))] : [], new vscode.NotebookCellMetadata()));
         // Pass read and formatted Notebook Data to VS Code to display Notebook with saved cells
@@ -34,7 +36,7 @@ class GroceryListNotebookContentSerializer {
             return result;
         }
         // Map the Notebook data into the format we want to save the Notebook data as
-        let contents = { cells: [] };
+        let contents = { groceryList: extension_1.groceryList, cells: [] };
         for (const cell of data.cells) {
             contents.cells.push({
                 kind: cell.kind,
